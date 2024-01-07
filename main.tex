@@ -12,7 +12,10 @@
 \usepackage{mathtools}
 \usepackage{multirow}
 \usepackage{tikz}
+\usetikzlibrary{automata, positioning, arrows}
 \usepackage{array}
+
+\usepackage{graphicx} % Für die Drehung der Tabelle
 
 \setlength{\parindent}{0pt}
 
@@ -153,7 +156,7 @@ x + y &= \neg x \rightarrow y \\
        &= ((x \rightarrow x) \oplus x) \rightarrow y
 \end{align*}
 
-\section*{Digitale Logikbausteine}
+\section{Digitale Logikbausteine}
 
 \begin{center}
     \includegraphics[width=1\linewidth]{resources/Logikbausteine.png}
@@ -228,7 +231,7 @@ Beispiel für $ B^3 \rightarrow B $ mit einem 2-Multiplexer:
 \end{center}
 
 
-\section*{Basisumwandlung}
+\section{Basisumwandlung}
 $ (132)_{10} \rightarrow (204)_{8}$
 
 \begin{align*}
@@ -236,34 +239,9 @@ $ (132)_{10} \rightarrow (204)_{8}$
 16 \div 8 &= 2 \text{ Rest } 0 \\
 2 \div 8 &= 0 \text{ Rest } 2
 \end{align*}
-
-\section{Beispielaufgaben}
-
-\subsection{Volladdierer mit 3:8 Decoder}
-\tiny
-\begin{center}
-   \begin{tabular}{ccc|cc}
-    \hline
-    $A$ & $B$ & $C_{in}$ & $S$ & $C_{out}$ \\ \hline
-    0 & 0 & 0   & 0 & 0    \\
-    0 & 0 & 1   & 1 & 0    \\
-    0 & 1 & 0   & 1 & 0    \\
-    0 & 1 & 1   & 0 & 1    \\
-    1 & 0 & 0   & 1 & 0    \\
-    1 & 0 & 1   & 0 & 1    \\
-    1 & 1 & 0   & 0 & 1    \\
-    1 & 1 & 1   & 1 & 1    \\ \hline
-    \end{tabular} 
-\end{center}
-
-\scriptsize
-
-\begin{center}
-    \includegraphics[width=0.75\linewidth]{resources/Decoder_Full_Adder.png}
-\end{center}
     
 
-\subsection{Quine McCluskey Verfahren}
+\section{Quine McCluskey Verfahren}
 \small
 $$
 f(a,b,c,d) = \sum m(0,1,2,5,6,7,8,9,10,14)
@@ -271,7 +249,7 @@ $$
 \scriptsize
 
 \begin{center}
-    \includegraphics[width=1\linewidth]{resources/prime_implicants_table Kopie.jpg}
+    \includegraphics[width=1\linewidth]{resources/Quine-McClueskey.png}
 \end{center}
 
 Nicht weiter verwendete Minterme:
@@ -301,7 +279,7 @@ Minimale Darstellung:
 $$f = \overline{a}bd + \overline{b}\overline{c} + c\overline{d}$$
 
 
-\subsection{OBDD}
+\section{OBDD}
 
 \scriptsize
 \begin{tabular}{ccc|c}
@@ -330,13 +308,13 @@ OBDD mit $x > z > y$
 Optimiertes OBDD mit $z > y > x$
 
 \begin{center}
-    \includegraphics[width=0.5\linewidth]{resources/Optimiertes_OBDD.png}
+    \includegraphics[width=0.5\linewidth]{resources/OBDD_gekürzt.png}
 \end{center}
 
 \scriptsize
 
 
-\subsection{Unabhängige Fehlerdiagnose}
+\subsection*{Unabhängige Fehlerdiagnose}
 \[ f(x_0, x_1, x_2) = x_0(x_1 + \overline{x_2}) \]
 
 \scriptsize
@@ -378,45 +356,49 @@ Minimale Testmengen:
     \item \{(011), (100), (101), (111)\}
 \end{itemize}
 
-\subsection{Eliminieren von Schaltungshazards}
+\subsection*{Eliminieren von Schaltungshazards}
 
 Anwenden von Satz von Eichelberger. Alle Primimplikanten in DNF führt zu Hazard-freiem Verhalten.
 
-\subsection{Schaltungsabhängige Fehlerdiagnose}
+\subsection*{Schaltungsabhängige Fehlerdiagnose}
 
 $$
-f(x_0, x_1) = x_0 \oplus x_1
+f(x_0, x_1) = \neg x_0 + \neg x_1
 $$
 
-Annahme: \quad $f_{x_0} = x_0$ Stuck \@ zero
+Annahme: \quad $f_{1} = 1$ stuck @ zero
 
-\qquad \qquad \qquad $f_{x_1} = x_1$ Stuck \@ zero 
+\qquad \qquad \qquad $f_{2} = 2$ stuck @ zero, etc. 
 
 \tiny
     \begin{center}
-        \begin{tabular}{cc|c|cc}
+        \begin{tabular}{cc|c|cccc}
             \hline
-            $x_0$ & $x_1$ & $f$ & $f_{x_0}$ & $f_{x_1}$\\
+            $x_0$ & $x_1$ & $f$ & $f_{1}$ & $f_{2}$ & $f_{3}$ & $f_{4}$  \\
             \hline
-            0 & 0 & 0 & 0 & 0 \\
-            0 & 1 & 1 & 1 & 0 \\
-            1 & 0 & 1 & 0 & 1 \\
-            1 & 1 & 0 & 1 & 1 \\
+            0 & 0 & 1 & 1 & 1 & 1 & 1 \\
+            0 & 1 & 1 & 1 & 1 & 0 & 1 \\
+            1 & 0 & 1 & 1 & 1 & 1 & 0 \\
+            1 & 1 & 0 & 1 & 1 & 0 & 0 \\
             \hline
         \end{tabular}
     \end{center}    
 \scriptsize
 
+$$
+f_1 = f_2
+$$
+
 \tiny
     \begin{center}
-        \begin{tabular}{cc|c|cc}
+        \begin{tabular}{cc|c|ccc}
             \hline
-            $x_0$ & $x_1$ & $f$ & $f \oplus f_{x_0}$ & $f \oplus f_{x_1}$\\
+            $x_0$ & $x_1$ & $f$ & $f \oplus f_{1}$ & $f \oplus f_{3}$ & $f \oplus f_{4}$ \\
             \hline
-            0 & 0 & 0 & 0 & 0 \\
-            0 & 1 & 1 & 0 & \textbf{1} \\
-            1 & 0 & 1 & \textbf{1} & 0 \\
-            1 & 1 & 0 & \textbf{1} & \textbf{1} \\
+            0 & 0 & 1 & 0 & 0 & 0 \\
+            0 & 1 & 1 & 0 & \textbf{1} & 0 \\
+            1 & 0 & 1 & 0 & 0 & \textbf{1} \\
+            1 & 1 & 0 & \textbf{1} & 0 & 0 \\
             \hline
         \end{tabular}
     \end{center}    
@@ -425,14 +407,14 @@ Annahme: \quad $f_{x_0} = x_0$ Stuck \@ zero
 Minimale Testmenge:
 
 \begin{itemize}
-    \item $\{(1,1)\}$
+    \item $\{(0,1),(1,0),(1,1)\}$
 \end{itemize}
 Alle Fehler sind feststellbar.
 
 \section{Delays}
 
 \begin{center}
-    \includegraphics[width=0.5\linewidth]{resources/Bildschirmfoto 2024-01-04 um 10.25.00.png}
+    \includegraphics[width=0.5\linewidth]{resources/Delay.png}
 \end{center}
 
 \begin{itemize}
@@ -444,12 +426,12 @@ Alle Fehler sind feststellbar.
     \item Kurzzeitiges Öffnen der Sperre während Setzphase
 \end{itemize}
 
-\subsection{Flipflops}
+\subsection*{Flipflops}
 
-\subsubsection{SR-Flipflop}
+\subsubsection*{SR-Flipflop}
 
 \begin{center}
-    \includegraphics[width=0.75\linewidth]{resources/SR_FlipFlop_CLK.png}
+    \includegraphics[width=0.75\linewidth]{resources/SR_FlipFlop.png}
 \end{center}
 
 \begin{itemize}
@@ -476,14 +458,14 @@ Alle Fehler sind feststellbar.
     \end{tabular}
 \end{center}
 
-\subsubsection{D-Flipflop}
+\subsubsection*{D-Flipflop}
 
 
 
 
 \begin{center}
-    \includegraphics[width=1\linewidth]{resources/Bildschirmfoto 2024-01-03 um 16.50.26.png}
-    \includegraphics[width=1\linewidth]{resources/Bildschirmfoto 2024-01-03 um 16.51.26.png}
+    \includegraphics[width=1\linewidth]{resources/D_FlipFlop.png}
+    \includegraphics[width=1\linewidth]{resources/D-FlipFlop_Timing.png}
 \end{center}
 
 \begin{itemize}
@@ -509,12 +491,12 @@ Alle Fehler sind feststellbar.
     \end{tabular}
 \end{center}
 
-\subsubsection{JK-Fliflop}
+\subsubsection*{JK-Fliflop}
 
 
 
 \begin{center}
-    \includegraphics[width=0.75\linewidth]{resources/Bildschirmfoto 2024-01-04 um 08.26.25.png}
+    \includegraphics[width=0.75\linewidth]{resources/JK_FlipFlop.png}
 \end{center}
 
 \begin{itemize}
@@ -541,10 +523,10 @@ Alle Fehler sind feststellbar.
     \end{tabular}
 \end{center}
 
-\subsection{MUX-Delay}
+\subsection*{MUX-Delay}
 
 \begin{center}
-    \includegraphics[width=0.75\linewidth]{resources/Bildschirmfoto 2024-01-04 um 10.36.08.png}
+    \includegraphics[width=0.75\linewidth]{resources/MUX_delay.png}
 \end{center}
 
 \begin{itemize}
@@ -552,6 +534,12 @@ Alle Fehler sind feststellbar.
     \item MUX Konfiguration für einfache Flanke: Takt direkt an Steuereingang.
     \item MUX Konfiguration für doppelte Flanke: Takt und invertierter Takt auf Steuereingänge zweier MUXe, die abwechselnd aktiviert werden.
 \end{itemize}
+
+\subsection*{Ringzähler}
+
+\begin{center}
+    \includegraphics[width=1\linewidth]{resources/JK-Ringzähler.png}
+\end{center}
 
 \section{Schaltwerke}
 
@@ -598,13 +586,13 @@ Alle Fehler sind feststellbar.
 \subsection*{4-Bit Paralleladdierwerk}
 
 \begin{center}
-    \includegraphics[width=1\linewidth]{resources/4Bit-Paralleladdierwerk.png}
+    \includegraphics[width=1\linewidth]{resources/4-Bit-Paralleladdierer.png}
 \end{center}
 
 \subsection*{4-Bit Serienaddierwerk}
 
 \begin{center}
-    \includegraphics[width=1\linewidth]{resources/4Bit-Serienaddierwerk.png}
+    \includegraphics[width=1\linewidth]{resources/4-Bit-Serienaddierwerk.png}
 \end{center}
 
 Ein $n$-Bit Serienaddierer benötigt $n + 1$ Schritte. $1$ Schritt für das Laden der Register und dann $n$ Addierschritte.
@@ -664,6 +652,28 @@ Form: $(-1)^V \cdot 1.M \cdot 2^{E-\text{Basis}}$ wo $(\text{Basis} = 127; E = e
     \end{tabular}
 \end{center}
 
+\begin{center}
+    % \noindent
+    \rotatebox{90}{%
+    \begin{tabular}{c|c|c|l}
+    \textbf{Dezimal} & \textbf{V} & \textbf{E} & \multicolumn{1}{c}{\textbf{M}} \\ \hline
+    -7.875    & 1 & 1000 0001 & 1111 0000 0000 0000 0000 000 \\
+    0         & 0 & 0000 0000 & 0000 0000 0000 0000 0000 000 \\
+    -0        & 1 & 0000 0000 & 0000 0000 0000 0000 0000 000 \\
+    0.15625   & 0 & 0111 1011 & 0100 0000 0000 0000 0000 000 \\
+    -128.0    & 1 & 1000 0010 & 0000 0000 0000 0000 0000 000 \\
+    1024.0    & 0 & 1000 1001 & 0000 0000 0000 0000 0000 000 \\
+    -0.0078125& 1 & 0111 0010 & 0000 0000 0000 0000 0000 000 \\
+    1.5       & 0 & 0111 1111 & 1000 0000 0000 0000 0000 000 \\
+    -32.0     & 1 & 1000 0010 & 0000 0000 0000 0000 0000 000 \\
+    256.0     & 0 & 1000 0111 & 0000 0000 0000 0000 0000 000 \\
+    -1024.0   & 1 & 1000 1001 & 0000 0000 0000 0000 0000 000 \\
+    \end{tabular}
+    }
+\end{center}
+
+
+
 \section{ASCII}
 
 \texttt{P000 0000}
@@ -706,7 +716,7 @@ $$
 $$
 
 \begin{center}
-    \includegraphics[width=1\linewidth]{resources/Multiplikation.png}
+    \includegraphics[width=1\linewidth]{resources/Multiplier.png}
 \end{center}
 
 \section{Division}
@@ -909,7 +919,7 @@ d(1; q_1, q_2, q_3, q_4) =
         \begin{itemize}
             \item \tiny{Wenn $AG \varphi$ wahr ist, dann gibt es keinen Pfad, auf dem irgendwann $\neg \varphi$ wahr ist.}
         \end{itemize}
-    \item $EF \varphi \Leftrightarrow T EU \varphi$
+    \item $EF \varphi \Leftrightarrow \top EU \varphi$
         \begin{itemize}
             \item \tiny{Wenn $EF \varphi$ wahr ist, dann ist von einem wahren Zustand aus $\varphi$ irgendwann erreichbar.}
         \end{itemize}
@@ -923,7 +933,7 @@ d(1; q_1, q_2, q_3, q_4) =
         \end{itemize}
 \end{itemize}
 
-Hierbei ist $T$ definiert als $T := p_0 \lor \neg p_0$, was immer wahr ist.
+Hierbei ist $\top$ definiert als $\top := p_0 \lor \neg p_0$, was immer wahr ist.
 
 Der Algorithmus behandelt:
 \[ \neg, \wedge, \text{EX}, \text{EU}, \text{AF} \]
@@ -943,17 +953,17 @@ Es gilt:
 
 Most-significant-Bit
 \begin{center}
-    \includegraphics[width=1\linewidth]{resources/MostSignificantBit.png}
+    \includegraphics[width=1\linewidth]{resources/MS_Bit.png}
 \end{center}
 
 Every other Bit
 \begin{center}
-    \includegraphics[width=1\linewidth]{resources/ALU_EveryOtherBit.png}
+    \includegraphics[width=1\linewidth]{resources/EO_Bit.png}
 \end{center}
 
 Komplettes ALU (bemerke $\neg B$ als $c_{in}$ im least-significant-bit für 2-er Komplement)
 \begin{center}    
-    \includegraphics[width=1\linewidth]{resources/ALU_Complete.png}
+    \includegraphics[width=1\linewidth]{resources/ALU_komplet.png}
 \end{center}
 
 $$
@@ -963,6 +973,73 @@ slt(a,b) :=
     1 \quad \text{wenn } a < b \\
 \end{cases}
 $$
+
+\section{Beispielaufgaben}
+
+\subsection*{Volladdierer mit 3:8 Decoder}
+\tiny
+\begin{center}
+   \begin{tabular}{ccc|cc}
+    \hline
+    $A$ & $B$ & $C_{in}$ & $S$ & $C_{out}$ \\ \hline
+    0 & 0 & 0   & 0 & 0    \\
+    0 & 0 & 1   & 1 & 0    \\
+    0 & 1 & 0   & 1 & 0    \\
+    0 & 1 & 1   & 0 & 1    \\
+    1 & 0 & 0   & 1 & 0    \\
+    1 & 0 & 1   & 0 & 1    \\
+    1 & 1 & 0   & 0 & 1    \\
+    1 & 1 & 1   & 1 & 1    \\ \hline
+    \end{tabular} 
+\end{center}
+
+\scriptsize
+
+\begin{center}
+    \includegraphics[width=0.75\linewidth]{resources/Decoder_Full_Adder.png}
+\end{center}
+
+\subsection*{CTL Model Checking Beispiel}
+
+Gegeben seien die atomaren Propositionen \( p \) und \( q \) und die Struktur 
+\( K = (\{v1, v2, v3\}, \{(v1, v2), (v1, v3), (v2, v2)\}, L, \{v1\}) \), 
+wobei \( L(v1) = \emptyset \), \( L(v2) = \{p\} \) und \( L(v3) = \{q\} \). 
+Benutzen Sie den Algorithmus aus der Vorlesung, um \( K \models AF(p \land AX \neg q) \) zu entscheiden.
+
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto] 
+   \node[state] (v1) {\(v1\)};
+   \node[state] (v2) [below left=of v1] {\(v2\)};
+   \node[state] (v3) [below right=of v1] {\(v3\)};
+    \path[->] 
+    (v1) edge node {} (v2)
+    (v1) edge node {} (v3)
+    (v3) edge node {} (v2)
+    (v2) edge [loop below] node {} ();
+\end{tikzpicture}
+\end{center}
+
+
+Wir wenden die CTL-Äquivalenzen an:
+\begin{itemize}
+    \item Die Formel \( AX \varphi \) ist äquivalent zu \( \neg EX \neg \varphi \).
+    \item Daraus folgt, dass \( AX \neg q \) äquivalent zu \( \neg EX q \) ist.
+\end{itemize}
+
+\begin{center}
+    \begin{tabular}{l|c}
+    Subformel & Zustände \\ \hline
+    \( p \) & \( v_2 \) \\
+    \( q \) & \( v_3 \) \\
+    \( \neg q \) & \( v_1, v_2 \) \\
+    \( AX \neg q \equiv \neg EX q \) & \( v_1, v_2 \) \\
+    \( p \land \neg EX q \) & \( v_2 \) \\
+    \( AF(p \land \neg EX q) \) & \( v_1, v_2, v_3 \) \\
+\end{tabular}
+\end{center}
+
+
+Das Kripke-Modell \( K \) erfüllt somit die Formel \( AF(p \land AX \neg q) \), da die Bedingung für jeden Zustand im Modell erfüllt ist.
 
 
 \end{multicols*}
