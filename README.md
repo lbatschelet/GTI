@@ -6,6 +6,7 @@
 ## Inhalt
 
 - [Cheat-sheet für die Prüfung](cheat-sheet/cheat-sheet.pdf)
+    - [Vollständiger LaTeX-Quellcode](cheat-sheet/cheat-sheet.tex)
 - [Serien](Serien)
 - [Schaltungen in Logisim](Schaltungen)
 
